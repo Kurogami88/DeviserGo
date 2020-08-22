@@ -1,6 +1,6 @@
-# Deviser
+# DeviserGo
 
-Deviser is a database and quick basic project setup in GO aimed to effectively create your backend API in minutes.
+DeviserGo is a database and quick basic project generator written in Golang aimed to effectively create your backend API in minutes.
 
 ## Requirements
 
@@ -31,9 +31,9 @@ XXXX or CURRENT_TIMESTAMP()
 
 ## Backend API Generator
 
-Generates the baseline GO project with all the basic setup of the database tables in database.xlsx and API services in api.xlsx.
+Generates the baseline Golang project with all the basic setup of the database tables in database.xlsx and API services in api.xlsx.
 
-The output will be generated in the *out* folder in the executable's directory.
+The output will be generated in the 'out' folder in the executable's directory.
 
 ### Configurations
 
