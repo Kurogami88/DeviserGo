@@ -4,24 +4,21 @@ Deviser is a database and quick basic project setup in GO aimed to effectively c
 
 ## Requirements
 
-Golang 1.14.7+
-MySQL 8.0+
-MS Excel 2007+
+- Golang 1.14.7+
+- MySQL 8.0+
+- MS Excel 2007+
 
 ## Database Generator
 
-Creates or updates your database with the values in the database.xlsx
-
-### Configurations
+Creates or updates your database with the values in the database.xlsx.
 
 Do not remove 'ACCOUNT', 'ACL' and 'AUDIT' from the excel sheet if you wish to use the login and audit feature.
 
-Note!
-- All table names should be plural
 - All field names should be lowercase
 - Please re-initialize the database if there are PRIMARY KEY changes.
+- All inputs are subjected to your selected database limitation
 
-*Please note of your database limitation*
+### Database Excel Field
 ```
 Length - X or X,Y
 16 for INT(16)/VARCHAR(16)
@@ -35,15 +32,23 @@ XXXX or CURRENT_TIMESTAMP()
 ## Backend API Generator
 
 Generates the baseline GO project with all the basic setup of the database tables in database.xlsx and API services in api.xlsx.
+
 The output will be generated in the *out* folder in the executable's directory.
-Existing file will be replaced if the file name has conflicts.
 
 ### Configurations
 
 You need to enable Login for JWT and ACL to work.
 
-Note!
-- Enabling Login/Audit/ACL/JWT without the initial database.xlsx configurations will cause errors
+- Enabling Login/Audit/ACL/JWT without the initial database.xlsx configurations will generate codes that are incomplete
+- Existing file will be replaced if the file name has conflicts
+
+### Future Roadmaps
+
+- Websocket
+- Unit Test as part of generated code
+- API document
+- Support More DB
+- Maintaining token cache for logout
 
 ### Contributors
 
