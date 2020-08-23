@@ -8,48 +8,30 @@ DeviserGo is a database and quick basic project generator written in Golang aime
 - MySQL 8.0+
 - MS Excel 2007+
 
-## Database Generator
+## How to generate your Golang Project
 
-Creates or updates your database with the values in the database.xlsx.
+1. Modify `doc/database.xlsx` to set the configuration and add your own database tables
+2. Modify `doc/api.xlsx` to set the configuration and add your own REST API endpoints
+3. Run `dbGenerator.exe` to create/update your database with your configuration  
+If you already created your database by your own means, please skip this step
+4. Run `apiGenerator.exe` to generate your Golang project code  
+For step 3. and 4., check that there are no errors in output.log
+5. Extract your new project code in `out/{Project}` to your `$GOPATH`
+6. Open your project with your favourite IDE and run `go test` and `go run {Project}`
 
-Do not remove 'ACCOUNT', 'ACL' and 'AUDIT' from the excel sheet if you wish to use the login and audit feature.
-
-- All field names should be lowercase
-- Please re-initialize the database if there are PRIMARY KEY changes.
-- All inputs are subjected to your selected database limitation
-
-### Database Excel Field
-```
-Length - X or X,Y
-16 for INT(16)/VARCHAR(16)
-64,2 for DECIMAL(64,2)
-```
-```
-Default - X or FUNC()
-XXXX or CURRENT_TIMESTAMP()
-```
-
-## Backend API Generator
-
-Generates the baseline Golang project with all the basic setup of the database tables in database.xlsx and API services in api.xlsx.
-
-The output will be generated in the 'out' folder in the executable's directory.
-
-### Configurations
-
-You need to enable Login for JWT and ACL to work.
-
-- Enabling Login/Audit/ACL/JWT without the initial database.xlsx configurations will generate codes that are incomplete
-- Existing file will be replaced if the file name has conflicts
+Do you need more information about DeviserGo?  
+Click on [DeviserGo](https://github.com/Kurogami88/DeviserGo/wiki) for more details  
 
 ### Future Roadmaps
 
+- Generating Unit Test Function
+- Generating API document
+- Support More Database
+- Maintaining JWT Token for Logout
+- Sub-directory project structure
 - Websocket
-- Unit Test as part of generated code
-- API document
-- Support More DB
-- Maintaining token cache for logout
 
 ### Contributors
 
--   Leong Kai Khee (Kurogami)
+-   Leong Kai Khee  
+(Kurogami)
