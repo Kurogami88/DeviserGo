@@ -8,6 +8,12 @@ DeviserGo is a database and quick basic project generator written in Golang aime
 - MySQL 8.0+
 - MS Excel 2007+
 
+## Modifying the template generator
+
+All source code is in the /src/{project} folder
+
+- You need to configure deviser.conf for each project individually
+
 ## How to generate your Golang Project
 
 1. Modify `doc/database.xlsx` to set the configuration and add your own database tables
@@ -27,7 +33,6 @@ Click on [DeviserGo](https://github.com/Kurogami88/DeviserGo/wiki) for more deta
 - Generating Unit Test Function
 - Generating API document
 - Support More Database
-- Maintaining JWT Token for Logout
 - Sub-directory project structure
 - Websocket
 
