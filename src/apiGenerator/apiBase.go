@@ -23,17 +23,17 @@ import (
 
 //%sInput is the fields expected to be received
 type %sInput struct {
-	` + "input string `json:\"inputNameInJson\"`" + `
+	` + "Input string `json:\"inputNameInJson\"`" + `
 }
 
 //%sOutput is the fields expected to be sent
 type %sOutput struct {
-	` + "output string `json:\"outputNameInJson\"`" + `
+	` + "Output string `json:\"outputNameInJson\"`" + `
 }
 
 //%s is an API to ...
 func %s(w http.ResponseWriter, r *http.Request) {
-	result := DeviserResponse{HTTPStatus: 200, Result: %sOutput{}}
+	result := DeviserResponse{HTTPStatus: 200, Result: %sOutput{Output:"OK"}}
 
 	// 1.
 	// Decode body into your input struct with

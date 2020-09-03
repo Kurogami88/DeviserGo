@@ -28,6 +28,13 @@ For step 3. and 4., check that there are no errors in output.log
 Do you need more information about DeviserGo?  
 Click on [DeviserGo](https://github.com/Kurogami88/DeviserGo/wiki) for more details  
 
+### Features
+
+- Login/Logout with JWT Auth Token
+- Access Control for API
+- Audit logging
+- CRUD functions for DB tables
+
 ### Future Roadmaps
 
 - Generating Unit Test Function

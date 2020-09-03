@@ -16,7 +16,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-//Logout is an API to authenticate a user and return a token
+//Logout is an API to invalidate an existing token
 func Logout(w http.ResponseWriter, r *http.Request) {
 	result := DeviserResponse{HTTPStatus: 200, Result: "Successfully logged out"}
 
