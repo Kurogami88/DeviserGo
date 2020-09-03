@@ -33,13 +33,16 @@ func AuditMiddleware(next http.Handler) http.Handler {
 					return
 				}
 				api := r.URL.Path
-				param := ""
 
 				body, err := ioutil.ReadAll(r.Body)
 				if err != nil {
-					param = string(body)
+					LogError("[audit.go] Error reading request body")
+					result := DeviserResponse{HTTPStatus: 400, Result: "Error reading request body"}
+					result.DoResponse(w)
+					return
 				}
-
+				param := string(body)
+				
 				audit := Audit{
 					Username: &user,
 					Api:      &api,
