@@ -19,6 +19,8 @@ package main
 
 import (
 	"net/http"
+
+	//"github.com/gorilla/mux"
 )
 
 //%sInput is the fields expected to be received
@@ -38,7 +40,11 @@ func %s(w http.ResponseWriter, r *http.Request) {
 	// 1.
 	// Decode body into your input struct with
 	// POST - json.NewDecoder(r.Body).Decode(&test)
-	// GET - for key, value := range r.URL.Query() {}
+	// GET - Param in request string - /articles?category=XXX&id=YYY
+	// for key, value := range r.URL.Query() {}
+	// GET - Param as part of path - /articles/{category}/{id:[0-9]+}
+	// vars := mux.Vars(r)
+	// category := vars["category"]
 
 	// 2.
 	// Update result.Result with your output struct
