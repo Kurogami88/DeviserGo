@@ -26,12 +26,15 @@ func ACLMiddleware(next http.Handler) http.Handler {
 		if ok {
 			claims, ok := token.Claims.(jwt.MapClaims)
 			if ok {
-				role := claims["role"]
-				api := r.URL.Path
+				role, ok := claims["role"].(string)
+				if ok {
+					api := r.URL.Path
 
-				condition := map[string]interface{}{"role": role, "type": "API", "key": api}
-				acl, _ := DBAclRetrieveCondition(condition)
-				permitted = len(acl) != 1
+					acl, _ := DBAclRetrieveCondition("role = '" + role + "' and type = 'API' and key = '" + api + "'")
+					permitted = len(acl) != 1
+				} else {
+					LogError("[acl.go] Error casting claims.role")
+				}
 			} else {
 				LogError("[acl.go] Error casting jwt.MapClaims")
 			}

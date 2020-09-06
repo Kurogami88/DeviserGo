@@ -63,21 +63,28 @@ package main
 54. Table Name (First char uppercase)
 55. Table Name (First char uppercase)
 56. Table Name
-57. Table Name
-58. Table Name
 
-59. Table Name (First char uppercase)
-60. Table Name (First char uppercase)
-61. Table Name
+57. Table Name (First char uppercase)
+58. Table Name (First char uppercase)
+59. Table Name
+61. Table Name (First char uppercase)
 62. Table Name (First char uppercase)
-63. Table Name (First char uppercase)
+63. Table Name
 64. Table Name
 65. Table Name
-66. Table Name
 
+66. Table Name (First char uppercase)
 67. Table Name (First char uppercase)
-68. Table Name (First char uppercase)
+68. Table Name
 69. Table Name (First char uppercase)
+70. Table Name (First char uppercase)
+71. Table Name
+72. Table Name
+73. Table Name
+
+74. Table Name (First char uppercase)
+75. Table Name (First char uppercase)
+76. Table Name (First char uppercase)
 */
 
 var dbBase = `
@@ -132,10 +139,11 @@ func DB%sRetrieveUnscopeCondition(conditions map[string]interface{}) ([]%s, erro
 }
 
 //DB%sRetrieveCondition retrieve DB records fulfilling your condition
-func DB%sRetrieveCondition(conditions map[string]interface{}) ([]%s, error) {
+func DB%sRetrieveCondition(conditions string) ([]%s, error) {
 	%ss := []%s{}
 
-	if len(conditions) == 0 {
+	// conditions "user='me' and age = 20"
+	if conditions == "" {
 		err := db.Find(&%ss).Error
 		if err != nil {
 			return %ss, err
@@ -172,6 +180,18 @@ func DB%sUpdate(%s %s) (%s, error) {
 
 	db.First(&%s)
 	return %s, nil
+}
+
+//DB%sUpdateCondition updates DB records fulfilling your condition
+func DB%sUpdateCondition(%s %s, conditions string) error {
+	// Will do nothing if key does not exist
+	// conditions "user='me' and age = 20"
+	err := db.Model(%s{}).Where(conditions).Updates(&%s).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 //DB%sDelete soft-deletes a DB record with matching primary key

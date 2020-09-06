@@ -50,13 +50,23 @@ func AuthValidityMiddleware(next http.Handler) http.Handler {
 		if ok {
 			claims, ok := token.Claims.(jwt.MapClaims)
 			if ok {
-				uuid := claims["jti"]
-				username := claims["user"]
-				role := claims["role"]
-
-				condition := map[string]interface{}{"uuid": uuid, "username": username, "role": role}
-				token, _ := DBTokenRetrieveCondition(condition)
-				permitted = len(token) == 1
+				uuid, ok := claims["jti"].(string)
+				if ok {
+					username, ok := claims["user"].(string)
+					if ok {
+						role, ok := claims["role"].(string)
+						if ok {
+							token, _ := DBTokenRetrieveCondition("uuid = '" + uuid + "' and username = '" + username + "' and role = '" + role + "'")
+							permitted = len(token) == 1
+						} else {
+							LogError("[auth.go] Error casting claims.role")
+						}
+					} else {
+						LogError("[auth.go] Error casting claims.user")
+					}
+				} else {
+					LogError("[auth.go] Error casting claims.jti")
+				}
 			} else {
 				LogError("[auth.go] Error casting jwt.MapClaims")
 			}
@@ -72,6 +82,12 @@ func AuthValidityMiddleware(next http.Handler) http.Handler {
 			return
 		}
 	})
+}
+
+// AuthEncryptPassword will encrypt the given string
+func AuthEncryptPassword(input string) (string, error) {
+	encyptedString, err := bcrypt.GenerateFromPassword([]byte(input), bcrypt.DefaultCost)
+	return string(encyptedString), err
 }
 
 // AuthCreateToken returns token string

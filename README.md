@@ -42,6 +42,7 @@ Click on [DeviserGo](https://github.com/Kurogami88/DeviserGo/wiki) for more deta
 - Support More Database
 - Sub-directory project structure
 - Websocket
+- 2FA Support
 
 ### Contributors
 

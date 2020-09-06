@@ -37,15 +37,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	var input LoginInput
 	json.NewDecoder(r.Body).Decode(&input)
 
-	/*encyptedPW, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
-	if err != nil {
-		result = DeviserResponse{HTTPStatus: 400, Result: "Error encrypting data"}
-		result.DoResponse(w)
-		return
-	}*/
-	
-	condition := map[string]interface{}{"username": input.Username}
-	account, _ := DBAccountRetrieveCondition(condition)
+	account, _ := DBAccountRetrieveCondition("username = '" + input.Username + "'")
 	if len(account) != 1 {
 		result = DeviserResponse{HTTPStatus: 400, Result: "Error logging in"}
 		result.DoResponse(w)
