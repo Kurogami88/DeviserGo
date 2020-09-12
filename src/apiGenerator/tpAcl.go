@@ -30,8 +30,8 @@ func ACLMiddleware(next http.Handler) http.Handler {
 				if ok {
 					api := r.URL.Path
 
-					acl, _ := DBAclRetrieveCondition("role = '" + role + "' and type = 'API' and key = '" + api + "'")
-					permitted = len(acl) != 1
+					acl, _ := DBAclRetrieveCondition("` + "`role`" + ` = '" + role + "' and ` + "`type`" + ` = 'API' and ` + "`key`" + ` = '" + api + "'")
+					permitted = len(acl) == 1
 				} else {
 					LogError("[acl.go] Error casting claims.role")
 				}

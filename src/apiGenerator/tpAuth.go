@@ -1,5 +1,8 @@
 package main
 
+/* PARSE IN VALUE
+1. Token Storing Method
+*/
 var tpAuth = `
 /***
 	Author: Leong Kai Khee (Kurogami)
@@ -17,6 +20,7 @@ import (
 
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	"github.com/dgrijalva/jwt-go"
+	"golang.org/x/crypto/bcrypt"
 )
 
 
@@ -52,18 +56,7 @@ func AuthValidityMiddleware(next http.Handler) http.Handler {
 			if ok {
 				uuid, ok := claims["jti"].(string)
 				if ok {
-					username, ok := claims["user"].(string)
-					if ok {
-						role, ok := claims["role"].(string)
-						if ok {
-							token, _ := DBTokenRetrieveCondition("uuid = '" + uuid + "' and username = '" + username + "' and role = '" + role + "'")
-							permitted = len(token) == 1
-						} else {
-							LogError("[auth.go] Error casting claims.role")
-						}
-					} else {
-						LogError("[auth.go] Error casting claims.user")
-					}
+					%s
 				} else {
 					LogError("[auth.go] Error casting claims.jti")
 				}
@@ -115,3 +108,18 @@ func AuthCreateToken(uuid, user, role string) (string, error) {
 	return tokenString, nil
 }
 `
+
+var tpAuthRedis = `_, err := cache.Get("Token_" + uuid).Result()
+					permitted = err == nil`
+var tpAuthDB = `username, ok := claims["user"].(string)
+					if ok {
+						role, ok := claims["role"].(string)
+						if ok {
+							token, _ := DBTokenRetrieveCondition("` + "`uuid`" + ` = '" + uuid + "' and ` + "`username`" + ` = '" + username + "' and ` + "`role`" + ` = '" + role + "'")
+							permitted = len(token) == 1
+						} else {
+							LogError("[auth.go] Error casting claims.role")
+						}
+					} else {
+						LogError("[auth.go] Error casting claims.user")
+					}`

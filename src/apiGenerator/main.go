@@ -101,7 +101,7 @@ func main() {
 	if err != nil {
 		log.Fatalln("API Config B8 Invalid")
 	}
-	apiConfig["ver"], err = fAPI.GetCellValue("api", "B9")
+	apiConfig["redis"], err = fAPI.GetCellValue("api", "B9")
 	if err != nil {
 		log.Fatalln("API Config B9 Invalid")
 	}
@@ -145,25 +145,40 @@ func main() {
 	}
 	// Login base files
 	if apiConfig["login"] == "Yes" {
-		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/auth.go", []byte(tpAuth), os.ModePerm)
-		if err != nil {
-			log.Fatalf("Making auth.go error: %v\n", err)
+		if apiConfig["redis"] == "Yes" {
+			err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/auth.go", []byte(fmt.Sprintf(tpAuth, tpAuthRedis)), os.ModePerm)
+			if err != nil {
+				log.Fatalf("Making auth.go error: %v\n", err)
+			}
+			err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/apiLogin.go", []byte(fmt.Sprintf(apiLogin, apiLoginRedisImport, apiLoginRedis)), os.ModePerm)
+			if err != nil {
+				log.Fatalf("Making apiLogin.go error: %v\n", err)
+			}
+			err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/apiLogout.go", []byte(fmt.Sprintf(apiLogout, apiLogoutRedis)), os.ModePerm)
+			if err != nil {
+				log.Fatalf("Making apiLogout.go error: %v\n", err)
+			}
+		} else {
+			err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/auth.go", []byte(fmt.Sprintf(tpAuth, tpAuthDB)), os.ModePerm)
+			if err != nil {
+				log.Fatalf("Making auth.go error: %v\n", err)
+			}
+			err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/apiLogin.go", []byte(fmt.Sprintf(apiLogin, "", apiLoginDB)), os.ModePerm)
+			if err != nil {
+				log.Fatalf("Making apiLogin.go error: %v\n", err)
+			}
+			err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/apiLogout.go", []byte(fmt.Sprintf(apiLogout, apiLogoutDB)), os.ModePerm)
+			if err != nil {
+				log.Fatalf("Making apiLogout.go error: %v\n", err)
+			}
+			err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/apiPurgeToken.go", []byte(apiPurgeToken), os.ModePerm)
+			if err != nil {
+				log.Fatalf("Making apiPurgeToken.go error: %v\n", err)
+			}
 		}
 		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/acl.go", []byte(tpAcl), os.ModePerm)
 		if err != nil {
 			log.Fatalf("Making acl.go error: %v\n", err)
-		}
-		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/apiLogin.go", []byte(apiLogin), os.ModePerm)
-		if err != nil {
-			log.Fatalf("Making apiLogin.go error: %v\n", err)
-		}
-		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/apiLogout.go", []byte(apiLogout), os.ModePerm)
-		if err != nil {
-			log.Fatalf("Making apiLogout.go error: %v\n", err)
-		}
-		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/apiPurgeToken.go", []byte(apiPurgeToken), os.ModePerm)
-		if err != nil {
-			log.Fatalf("Making apiPurgeToken.go error: %v\n", err)
 		}
 	}
 	// Audit base files
@@ -176,11 +191,20 @@ func main() {
 	// Main
 	mainCORS1 := ""
 	mainCORS2 := ""
+	mainRedis1 := ""
+	mainRedis2 := ""
+	mainRedis3 := ""
 	if apiConfig["cors"] == "Yes" {
 		mainCORS1 = tpMainCORS
 		mainCORS2 = tpMainCORSListener
 	}
-	err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/main.go", []byte(fmt.Sprintf(tpMain, apiConfig["proj"], mainCORS1, mainCORS2)), os.ModePerm)
+	if apiConfig["redis"] == "Yes" {
+		mainRedis1 = tpMainRedisImport
+		mainRedis2 = tpMainRedisVar
+		mainRedis3 = tpMainRedisInit
+	}
+	err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/main.go", []byte(fmt.Sprintf(tpMain,
+		mainRedis1, mainRedis2, apiConfig["proj"], mainRedis3, mainCORS1, mainCORS2)), os.ModePerm)
 	if err != nil {
 		log.Fatalf("Making main.go error: %v\n", err)
 	}
@@ -188,7 +212,9 @@ func main() {
 	// Prepare router
 	routes := ""
 	if apiConfig["login"] == "Yes" {
-		routes += tpRouterPurgeToken
+		if apiConfig["redis"] == "No" {
+			routes += tpRouterPurgeToken
+		}
 		routes += tpRouterLogin
 		routes += tpRouterLogout
 	}
@@ -199,7 +225,7 @@ func main() {
 	}
 	fieldRow := false
 	for _, row := range rows {
-		var rowValue [4]string
+		var rowValue [5]string
 		index := 0
 
 		// Retrieve values from excel
@@ -221,8 +247,9 @@ func main() {
 			continue
 		}
 
-		apiURL := apiConfig["ver"] + "/" + rowValue[1]
-		apiTitle := strings.Title(apiConfig["ver"]) + strings.Title(rowValue[1])
+		apiVersion := rowValue[4]
+		apiURL := apiVersion + "/" + rowValue[1]
+		apiTitle := strings.Title(apiVersion) + strings.Title(rowValue[1])
 		apiFunc := apiTitle
 		apiMethod := rowValue[0]
 
@@ -243,7 +270,7 @@ func main() {
 		}
 
 		// API template
-		apiFilename := apiConfig["ver"] + strings.Title(rowValue[1])
+		apiFilename := apiVersion + strings.Title(rowValue[1])
 		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/"+apiFilename+".go", []byte(
 			fmt.Sprintf(apiBase, apiTitle, apiTitle, apiTitle, apiTitle, apiTitle, apiTitle, apiTitle)), os.ModePerm)
 		if err != nil {

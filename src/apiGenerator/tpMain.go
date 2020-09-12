@@ -1,9 +1,12 @@
 package main
 
 /* PARSE IN VALUE
-1. Project Name
-2. CORS Origin Declare
-3. HTTP Listener with Option
+1. Redis Import
+2. Redis Variable
+3. Project Name
+4. Redis Initialization
+5. CORS Origin Declare
+6. HTTP Listener with Option
 */
 var tpMain = `
 /***
@@ -20,7 +23,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-
+	%s
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -41,7 +44,7 @@ func (dr *DeviserResponse) DoResponse(w http.ResponseWriter) {
 }
 
 var db *gorm.DB
-
+%s
 func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -55,6 +58,7 @@ func main() {
 	defer lf.Close()
 	log.SetOutput(lf)
 
+	// Database
 	dbIP := os.Getenv("DB_IP")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
@@ -67,7 +71,7 @@ func main() {
 	defer db.Close()
 	db.SingularTable(true)
 	//db.LogMode(false)
-
+	%s
 	myRouter := mux.NewRouter().StrictSlash(true)
 	SetRoutes(myRouter)
 	%s
@@ -85,6 +89,27 @@ func main() {
 }
 `
 
+var tpMainRedisImport = `"strconv"
+
+	"github.com/go-redis/redis"`
+var tpMainRedisVar = `var cache *redis.Client
+`
+var tpMainRedisInit = `
+	// Redis
+	redisIP := os.Getenv("REDIS_IP")
+	redisPort := os.Getenv("REDIS_PORT")
+	redisPW := os.Getenv("REDIS_PW")
+	redisDB, err := strconv.Atoi(os.Getenv("REDIS_DB"))
+	if err != nil {
+		log.Fatalf("Error converting Redis DB env: %v\n", err)
+	}
+
+	cache = redis.NewClient(&redis.Options{
+		Addr:     redisIP + ":" + redisPort,
+		Password: redisPW,
+		DB:       redisDB,
+	})
+`
 var tpMainCORS = `
 	originsOk := handlers.AllowedOrigins([]string{"*"})`
 var tpMainCORSListener = `originsOk, `

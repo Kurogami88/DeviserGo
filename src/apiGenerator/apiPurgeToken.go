@@ -25,7 +25,7 @@ func PurgeToken(w http.ResponseWriter, r *http.Request) {
 		result = DeviserResponse{HTTPStatus: 400, Result: "Error purging tokens"}
 	}
 
-	err = DBTokenDeleteUnscopeCondition("created_at < '" + time.Now().Add(-envAuthDuration).UTC().Format("2006-01-02 15:04:05") + "'")
+	err = DBTokenDeleteUnscopeCondition("` + "`created_at`" + ` < '" + time.Now().Add(-envAuthDuration).UTC().Format("2006-01-02 15:04:05") + "'")
 	if err != nil {
 		result = DeviserResponse{HTTPStatus: 400, Result: "Error purging tokens"}
 	}

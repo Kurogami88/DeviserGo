@@ -1,5 +1,8 @@
 package main
 
+/* PARSE IN VALUE
+1. Token Storing Method
+*/
 var apiLogout = `
 /***
 	Author: Leong Kai Khee (Kurogami)
@@ -26,18 +29,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		claims, ok := token.Claims.(jwt.MapClaims)
 		if ok {
 			uuid, _ := claims["jti"].(string)
-			username, _ := claims["username"].(string)
-			role, _ := claims["role"].(string)
-
-			dbToken := Token{
-				Uuid:     &uuid,
-				Username: &username,
-				Role:     &role,
-			}
-			_, err := DBTokenDeleteUnscope(dbToken)
-			if err != nil {
-				result = DeviserResponse{HTTPStatus: 400, Result: "Error logging out"}
-			}
+			%s
 		} else {
 			LogError("[auth.go] Error casting jwt.MapClaims")
 			result = DeviserResponse{HTTPStatus: 400, Result: "Error logging out"}
@@ -51,3 +43,22 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	return
 }
 `
+
+var apiLogoutRedis = `
+			err := cache.Del("Token_" + uuid).Err()
+			if err != nil {
+				result = DeviserResponse{HTTPStatus: 400, Result: "Error logging out"}
+			}`
+var apiLogoutDB = `username, _ := claims["username"].(string)
+			role, _ := claims["role"].(string)
+
+			dbToken := Token{
+				Uuid:     &uuid,
+				Username: &username,
+				Role:     &role,
+			}
+
+			_, err := DBTokenDeleteUnscope(dbToken)
+			if err != nil {
+				result = DeviserResponse{HTTPStatus: 400, Result: "Error logging out"}
+			}`

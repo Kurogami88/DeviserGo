@@ -34,6 +34,7 @@ Click on [DeviserGo](https://github.com/Kurogami88/DeviserGo/wiki) for more deta
 - Access Control for API
 - Audit logging
 - CRUD functions for DB tables
+- Redis caching support
 
 ### Future Roadmaps
 
@@ -41,6 +42,7 @@ Click on [DeviserGo](https://github.com/Kurogami88/DeviserGo/wiki) for more deta
 - Generating API document
 - Support More Database
 - Sub-directory project structure
+- Generate redis caching for all DB operations
 - Websocket
 - 2FA Support
 
