@@ -333,61 +333,62 @@ func main() {
 				fieldType = "*string"
 				fieldGORM = fmt.Sprintf(dbTableFieldGormType, "varchar", "("+rowValue[2]+")")
 				if rowValue[3] != "" {
-					fieldGORM += " " + dbTableFieldGormDefault + "'" + rowValue[1] + "'"
+					fieldGORM += ";" + dbTableFieldGormDefault + "'" + rowValue[3] + "'"
 				}
 				if rowValue[4] == "Yes" {
-					fieldGORM += " " + dbTableFieldGormKey
+					fieldGORM += ";" + dbTableFieldGormKey
 				}
 			case "INT":
 				fieldType = "*int"
 				fieldGORM = fmt.Sprintf(dbTableFieldGormType, "int", "("+rowValue[2]+")")
 				fieldGORM += " " + dbTableFieldGormAuto + "false"
 				if rowValue[3] != "" {
-					fieldGORM += " " + dbTableFieldGormDefault + rowValue[1]
+					fieldGORM += ";" + dbTableFieldGormDefault + rowValue[3]
 				}
 				if rowValue[4] == "Yes" {
-					fieldGORM += " " + dbTableFieldGormKey
+					fieldGORM += ";" + dbTableFieldGormKey
 				}
 			case "DECIMAL":
 				fieldType = "*float64"
 				fieldGORM = fmt.Sprintf(dbTableFieldGormType, "decimal", "("+rowValue[2]+")")
 				if rowValue[3] != "" {
-					fieldGORM += " " + dbTableFieldGormDefault + rowValue[1]
+					fieldGORM += ";" + dbTableFieldGormDefault + rowValue[3]
 				}
 				if rowValue[4] == "Yes" {
-					fieldGORM += " " + dbTableFieldGormKey
+					fieldGORM += ";" + dbTableFieldGormKey
 				}
 			case "BLOB":
 				fieldType = "*string"
 				fieldGORM = fmt.Sprintf(dbTableFieldGormType, "blob", "("+rowValue[2]+")")
 				if rowValue[3] != "" {
-					fieldGORM += " " + dbTableFieldGormDefault + "'" + rowValue[1] + "'"
+					fieldGORM += ";" + dbTableFieldGormDefault + "'" + rowValue[3] + "'"
 				}
 			case "BOOLEAN":
 				fieldType = "*bool"
 				fieldGORM = fmt.Sprintf(dbTableFieldGormType, "boolean", "")
 				if rowValue[3] != "" {
-					fieldGORM += " " + dbTableFieldGormDefault + rowValue[1]
+					fieldGORM += ";" + dbTableFieldGormDefault + rowValue[3]
 				}
 				if rowValue[4] == "Yes" {
-					fieldGORM += " " + dbTableFieldGormKey
+					fieldGORM += ";" + dbTableFieldGormKey
 				}
 			case "DATETIME":
 				fieldType = "*time.Time"
 				fieldGORM = fmt.Sprintf(dbTableFieldGormType, "boolean", "")
 				if rowValue[3] == "CURRENT_TIMESTAMP()" {
-					fieldGORM += " " + dbTableFieldGormDefault + dbTableFieldGormCT
+					fieldGORM += ";" + dbTableFieldGormDefault + dbTableFieldGormCT
 				}
 				if rowValue[4] == "Yes" {
-					fieldGORM += " " + dbTableFieldGormKey
+					fieldGORM += ";" + dbTableFieldGormKey
 				}
 			case "AUTO":
 				fieldType = "int"
 				fieldGORM = dbTableFieldGormAuto + "true"
 				if rowValue[4] == "Yes" {
-					fieldGORM += " " + dbTableFieldGormKey
+					fieldGORM += ";" + dbTableFieldGormKey
 				}
 			}
+			fieldGORM = fmt.Sprintf(dbTableFieldGorm, fieldGORM)
 
 			fieldStruct += fmt.Sprintf(dbTableField, strings.Title(rowValue[0]), fieldType, fieldGORM+" "+fieldJSON)
 		}
