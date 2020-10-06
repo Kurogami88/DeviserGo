@@ -249,12 +249,11 @@ func main() {
 
 		apiVersion := rowValue[4]
 		apiURL := apiVersion + "/" + rowValue[1]
-		apiTitle := strings.Title(apiVersion) + strings.Title(rowValue[1])
-		apiFunc := apiTitle
 		apiMethod := rowValue[0]
+		apiTitle := strings.Title(apiVersion) + strings.Title(rowValue[1]) + apiMethod
 
 		if apiConfig["audit"] == "Yes" || rowValue[2] == "Yes" || rowValue[3] == "Yes" {
-			apiFunc = fmt.Sprintf(tpRouterHandler, apiFunc)
+			apiFunc := fmt.Sprintf(tpRouterHandler, apiTitle)
 			if apiConfig["audit"] == "Yes" {
 				apiFunc = fmt.Sprintf(tpRouterAudit, apiFunc)
 			}
@@ -266,11 +265,11 @@ func main() {
 			}
 			routes += fmt.Sprintf(tpRouterMiddleware, apiURL, apiFunc, apiMethod)
 		} else {
-			routes += fmt.Sprintf(tpRouterSimple, apiURL, apiFunc, apiMethod)
+			routes += fmt.Sprintf(tpRouterSimple, apiURL, apiTitle, apiMethod)
 		}
 
 		// API template
-		apiFilename := apiVersion + strings.Title(rowValue[1])
+		apiFilename := apiVersion + strings.Title(rowValue[1]) + apiMethod
 		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/"+apiFilename+".go", []byte(
 			fmt.Sprintf(apiBase, apiTitle, apiTitle, apiTitle, apiTitle, apiTitle, apiTitle, apiTitle)), os.ModePerm)
 		if err != nil {
