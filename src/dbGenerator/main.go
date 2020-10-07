@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"unicode"
 
 	excelize "github.com/360EntSecGroup-Skylar/excelize/v2"
 	_ "github.com/go-sql-driver/mysql"
@@ -104,9 +105,18 @@ func main() {
 			log.Fatalln(sheet + " error")
 		}
 
-		tableName, err := f.GetCellValue(sheet, "B2")
+		tableName := ""
+		preTableName, err := f.GetCellValue(sheet, "B2")
 		if err != nil {
 			log.Fatalln("Config B2 Invalid")
+		}
+
+		for _, char := range preTableName {
+			if unicode.IsUpper(char) && unicode.IsLetter(char) {
+				tableName = tableName + "_" + strings.ToLower(string(char))
+			} else {
+				tableName = tableName + string(char)
+			}
 		}
 
 		res, _ := db.Query("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name='" + tableName + "' AND table_schema='" + databaseConfig["table"] + "'")
@@ -122,7 +132,7 @@ func main() {
 				log.Fatalln(err)
 			}
 
-			tableStatement := "CREATE TABLE IF NOT EXISTS " + tableName + " ( "
+			tableStatement := "CREATE TABLE IF NOT EXISTS `" + tableName + "` ( "
 			keyStatement := ""
 			indexStatement := ""
 			fieldStart := 4
