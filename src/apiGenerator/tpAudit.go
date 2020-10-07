@@ -32,7 +32,7 @@ func AuditMiddleware(next http.Handler) http.Handler {
 					result.DoResponse(w)
 					return
 				}
-				api := r.URL.Path
+				api := r.URL.String()
 
 				body, err := ioutil.ReadAll(r.Body)
 				if err != nil {
