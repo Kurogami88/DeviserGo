@@ -64,12 +64,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	dbToken := Token{
-		Uuid:     &uuid,
-		Username: account[0].Username,
-		Role:     account[0].Role,
-	}
-
 	%s
 
 	result.Result = LoginOutput{Token: token}
@@ -87,20 +81,19 @@ var apiLoginRedis = `envAuthDuration, err := time.ParseDuration(os.Getenv("JWT_E
 		result = DeviserResponse{HTTPStatus: 400, Result: "Error storing tokens"}
 	}
 
-	jsonToken, err := json.Marshal(dbToken)
-	if err != nil {
-		result = DeviserResponse{HTTPStatus: 400, Result: "Error storing token"}
-		result.DoResponse(w)
-		return
-	}
-
-	err = cache.Set("Token_"+uuid, jsonToken, envAuthDuration).Err()
+	err = cache.Set("Token_"+uuid, token, envAuthDuration).Err()
 	if err != nil {
 		result = DeviserResponse{HTTPStatus: 400, Result: "Error storing token"}
 		result.DoResponse(w)
 		return
 	}`
-var apiLoginDB = `_, err = DBTokenCreate(dbToken)
+var apiLoginDB = `dbToken := Token{
+		Uuid:     &uuid,
+		Username: account[0].Username,
+		Role:     account[0].Role,
+	}
+
+	_, err = DBTokenCreate(dbToken)
 	if err != nil {
 		result = DeviserResponse{HTTPStatus: 400, Result: "Error storing token"}
 		result.DoResponse(w)
