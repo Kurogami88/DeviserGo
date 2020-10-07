@@ -13,8 +13,7 @@ package main
 8. Redis PW
 9. Redis DB
 */
-var tpEnv = `
-SERVER_IP=%s
+var tpEnv = `SERVER_IP=%s
 SERVER_PORT=%s
 DB_IP=%s
 DB_PORT=%s
@@ -27,5 +26,4 @@ JWT_EXPIRY_MIN=60
 REDIS_IP=localhost
 REDIS_PORT=6379
 REDIS_PW=
-REDIS_DB=0
-`
+REDIS_DB=0`
