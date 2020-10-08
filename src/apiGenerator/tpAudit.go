@@ -42,6 +42,8 @@ func AuditMiddleware(next http.Handler) http.Handler {
 					return
 				}
 				param := string(body)
+				//Reset pointer to initial state
+				r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 				
 				audit := Audit{
 					Username: &user,
