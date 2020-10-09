@@ -35,6 +35,7 @@ Click on [DeviserGo](https://github.com/Kurogami88/DeviserGo/wiki) for more deta
 - Audit logging
 - CRUD functions for DB tables
 - Redis caching support
+- SMTP email support
 
 ### Future Roadmaps
 
