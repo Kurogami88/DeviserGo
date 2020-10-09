@@ -3,8 +3,7 @@ package main
 /* PARSE IN VALUE
 1. Project Name
 */
-var tpMod = `
-module %s
+var tpMod = `module %s
 
 go 1.14
 

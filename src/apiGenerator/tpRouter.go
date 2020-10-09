@@ -6,8 +6,7 @@ package main
 1.2. API Name (First char uppercase)
 1.3. API Method (To append middleware)
 */
-var tpRouter = `
-/***
+var tpRouter = `/***
 	Author: Leong Kai Khee (Kurogami)
 	Date: 2020
 

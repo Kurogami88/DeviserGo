@@ -8,10 +8,6 @@ package main
 5. DB Name
 6. DB User
 7. DB PW
-8. Redis IP
-9. Redis Port
-8. Redis PW
-9. Redis DB
 */
 var tpEnv = `SERVER_IP=%s
 SERVER_PORT=%s
@@ -26,4 +22,8 @@ JWT_EXPIRY_MIN=60
 REDIS_IP=localhost
 REDIS_PORT=6379
 REDIS_PW=
-REDIS_DB=0`
+REDIS_DB=0
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=from@gmail.com
+SMTP_PW=`

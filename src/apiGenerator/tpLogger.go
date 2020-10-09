@@ -1,7 +1,6 @@
 package main
 
-var tpLogger = `
-/***
+var tpLogger = `/***
 	Author: Leong Kai Khee (Kurogami)
 	Date: 2020
 

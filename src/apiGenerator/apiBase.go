@@ -7,8 +7,7 @@ package main
 4. API Name (First char uppercase)
 5. API Name (First char uppercase)
 */
-var apiBase = `
-/***
+var apiBase = `/***
 	Author: Leong Kai Khee (Kurogami)
 	Date: 2020
 

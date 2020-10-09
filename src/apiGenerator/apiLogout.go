@@ -3,8 +3,7 @@ package main
 /* PARSE IN VALUE
 1. Token Storing Method
 */
-var apiLogout = `
-/***
+var apiLogout = `/***
 	Author: Leong Kai Khee (Kurogami)
 	Date: 2020
 

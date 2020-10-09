@@ -8,8 +8,7 @@ package main
 5. CORS Origin Declare
 6. HTTP Listener with Option
 */
-var tpMain = `
-/***
+var tpMain = `/***
 	Author: Leong Kai Khee (Kurogami)
 	Date: 2020
 

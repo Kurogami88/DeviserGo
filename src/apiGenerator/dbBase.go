@@ -87,8 +87,7 @@ package main
 76. Table Name (First char uppercase)
 */
 
-var dbBase = `
-/***
+var dbBase = `/***
 	Author: Leong Kai Khee (Kurogami)
 	Date: 2020
 

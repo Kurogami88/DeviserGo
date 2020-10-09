@@ -105,9 +105,13 @@ func main() {
 	if err != nil {
 		log.Fatalln("API Config B9 Invalid")
 	}
-	apiConfig["cors"], err = fAPI.GetCellValue("api", "B10")
+	apiConfig["smtp"], err = fAPI.GetCellValue("api", "B10")
 	if err != nil {
 		log.Fatalln("API Config B10 Invalid")
+	}
+	apiConfig["cors"], err = fAPI.GetCellValue("api", "B11")
+	if err != nil {
+		log.Fatalln("API Config B11 Invalid")
 	}
 
 	log.Println(apiConfig)
@@ -186,6 +190,13 @@ func main() {
 		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/audit.go", []byte(tpAudit), os.ModePerm)
 		if err != nil {
 			log.Fatalf("Making audit.go error: %v\n", err)
+		}
+	}
+	// SMTP base files
+	if apiConfig["smtp"] == "Yes" {
+		err = ioutil.WriteFile("out/"+apiConfig["proj"]+"/smtp.go", []byte(tpSmtp), os.ModePerm)
+		if err != nil {
+			log.Fatalf("Making smtp.go error: %v\n", err)
 		}
 	}
 	// Main

@@ -4,8 +4,7 @@ package main
 1. Redis import
 1. Token Storing Method
 */
-var apiLogin = `
-/***
+var apiLogin = `/***
 	Author: Leong Kai Khee (Kurogami)
 	Date: 2020
 

@@ -1,7 +1,6 @@
 package main
 
-var tpAudit = `
-/***
+var tpAudit = `/***
 	Author: Leong Kai Khee (Kurogami)
 	Date: 2020
 
